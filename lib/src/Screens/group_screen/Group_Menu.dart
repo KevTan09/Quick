@@ -40,16 +40,19 @@ class _GroupScreen extends State<GroupScreen> {
               appBar: PreferredSize(
                   preferredSize: Size.fromHeight(100),
                   child: AppBar(
-                    title: Text(args['groupName'], style: TextStyle(fontWeight:  FontWeight.bold),),
+                    iconTheme: IconThemeData(
+                      color: Colors.white
+                    ),
+                    title: Text(args['groupName'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                     bottom: TabBar(
                       onTap: _onTabTap,
                       tabs: [
                         Tab(
                             child: Row(
                               children: [
-                                Icon(Icons.list),
+                                Icon(Icons.list, color: Colors.white,),
                                 SizedBox(width: 10,),
-                                Text('Tugas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
+                                Text('Tugas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),)
                               ],
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,9 +61,9 @@ class _GroupScreen extends State<GroupScreen> {
                         Tab(
                             child: Row(
                               children: [
-                                Icon(Icons.people),
+                                Icon(Icons.people, color: Colors.white),
                                 SizedBox(width: 10,),
-                                Text('Member', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
+                                Text('Member', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),)
                               ],
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,8 +82,8 @@ class _GroupScreen extends State<GroupScreen> {
               floatingActionButton: this.index == 0 && this.isAdmin?
               FloatingActionButton.extended(
                 onPressed: () {Navigator.pushNamed(context, AssignTask.id);},
-                label: Text('Tambah', style: TextStyle(fontWeight: FontWeight.bold),),
-                icon: Icon(Icons.create),
+                label: Text('Tambah', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                icon: Icon(Icons.create, color: Colors.white,),
               ) : null,
             )
         )

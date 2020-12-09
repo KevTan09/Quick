@@ -1,4 +1,4 @@
-import 'package:Quick/src/Widgets/Member_Container.dart';
+import 'package:Quick/src/Widgets/Containers/Member_Container.dart';
 import 'package:flutter/material.dart';
 
 class MemberList extends StatefulWidget{
@@ -9,7 +9,7 @@ class MemberList extends StatefulWidget{
 }
 
 class _MemberList extends State<MemberList>{
-  List<Map<String, Object>> members;
+  List<Map<String, Object>> members = [];
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:Quick/src/Widgets/Signup_Widget.dart';
+import 'package:Quick/src/Widgets/Forms/Signup_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

@@ -1,4 +1,4 @@
-import 'package:Quick/src/Widgets/Task_Container.dart';
+import 'package:Quick/src/Widgets/Containers/Task_Container.dart';
 import 'package:flutter/material.dart';
 
 class TaskList extends StatefulWidget{
@@ -13,7 +13,7 @@ class TaskList extends StatefulWidget{
 class _TaskList extends State<TaskList>{
   _TaskList(this.isAdmin);
   bool isAdmin;
-  List<Map<String, Object>> tasks;
+  List<Map<String, Object>> tasks = [];
 
   @override
   Widget build(BuildContext context) {

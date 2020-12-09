@@ -1,9 +1,9 @@
-import 'package:Quick/src/group_screen/Assign_Task.dart';
-import 'package:Quick/src/group_screen/Group_List.dart';
-import 'package:Quick/src/group_screen/Group_Menu.dart';
-import 'package:Quick/src/group_screen/Task_Detail.dart';
-import 'package:Quick/src/login_screen/Sign_In.dart';
-import 'package:Quick/src/login_screen/Sign_Up.dart';
+import 'package:Quick/src/Screens/group_screen/Assign_Task.dart';
+import 'package:Quick/src/Screens/group_screen/Group_List.dart';
+import 'package:Quick/src/Screens/group_screen/Group_Menu.dart';
+import 'package:Quick/src/Screens/group_screen/Task_Detail.dart';
+import 'package:Quick/src/Screens/login_screen/Sign_In.dart';
+import 'package:Quick/src/Screens/login_screen/Sign_Up.dart';
 import 'package:Quick/src/splash_screen.dart';
 import 'package:flutter/material.dart';
 

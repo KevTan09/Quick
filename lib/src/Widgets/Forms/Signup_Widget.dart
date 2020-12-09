@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:Quick/src/Commons/Helper.dart';
 import 'package:Quick/src/Commons/Services.dart';
 import 'package:Quick/src/Commons/responseCode.dart';
-import 'package:Quick/src/group_screen/Group_List.dart';
-import 'package:Quick/src/login_screen/Sign_In.dart';
+import 'package:Quick/src/Screens/group_screen/Group_List.dart';
+import 'package:Quick/src/Screens/login_screen/Sign_In.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -108,13 +108,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       )
                           : Container(
                         decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: Colors.white70,
                             borderRadius: BorderRadius.circular(50)),
                         width: 100,
                         height: 100,
                         child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.grey[800],
+                          Icons.add_photo_alternate,
+                          size: 25,
+                          color: Colors.grey,
                         ),
                       ),
                     ),

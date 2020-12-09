@@ -1,4 +1,4 @@
-import 'package:Quick/src/group_screen/Task_Detail.dart';
+import 'package:Quick/src/Screens/group_screen/Task_Detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

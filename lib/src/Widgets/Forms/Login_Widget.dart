@@ -1,8 +1,8 @@
 import 'package:Quick/src/Commons/Helper.dart';
 import 'package:Quick/src/Commons/Services.dart';
 import 'package:Quick/src/Commons/responseCode.dart';
-import 'package:Quick/src/group_screen/Group_List.dart';
-import 'package:Quick/src/login_screen/Sign_Up.dart';
+import 'package:Quick/src/Screens/group_screen/Group_List.dart';
+import 'package:Quick/src/Screens/login_screen/Sign_Up.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

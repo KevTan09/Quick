@@ -1,3 +1,4 @@
+import 'package:Quick/src/Commons/Services.dart';
 import 'package:flutter/material.dart';
 
 class GroupContainer extends StatelessWidget{
@@ -16,9 +17,10 @@ class GroupContainer extends StatelessWidget{
             child: ListTile(
               leading: CircleAvatar(
                 radius: 25,
-                backgroundImage: NetworkImage(group['groupImage']),
+                backgroundColor: Colors.orangeAccent,
+                backgroundImage: NetworkImage(Services.serverImageUrl(group['group_image'])),
               ),
-              title: Text(group['groupName'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
+              title: Text(group['group_name'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
             ),
           ),
         )

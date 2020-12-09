@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:Quick/src/group_screen/Group_List.dart';
-import 'package:Quick/src/login_screen/Sign_In.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Screens/group_screen/Group_List.dart';
+import 'Screens/login_screen/Sign_In.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splashscreen';
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>{
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), _getPref);
+    Timer(Duration(seconds: 2), _getPref);
   }
 
   @override
