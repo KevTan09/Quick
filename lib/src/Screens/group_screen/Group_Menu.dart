@@ -17,6 +17,7 @@ class GroupScreen extends StatefulWidget{
 class _GroupScreen extends State<GroupScreen> {
   int index = 0;
   bool isAdmin = true;
+  dynamic groupId;
 
   _GroupScreen();
 
@@ -32,6 +33,11 @@ class _GroupScreen extends State<GroupScreen> {
         .of(context)
         .settings
         .arguments;
+
+    setState(() {
+      isAdmin = args['is_admin'] == 1;
+      groupId = args['id'];
+    });
 
     return DefaultTabController(
         length: 2,
@@ -75,13 +81,19 @@ class _GroupScreen extends State<GroupScreen> {
               ),
               body: TabBarView(
                 children: [
-                  TaskList(isAdmin: this.isAdmin),
-                  MemberList()
+                  TaskList(isAdmin: this.isAdmin, groupId: groupId,),
+                  MemberList(isAdmin: this.isAdmin, groupId: groupId)
                 ],
               ),
               floatingActionButton: this.index == 0 && this.isAdmin?
               FloatingActionButton.extended(
-                onPressed: () {Navigator.pushNamed(context, AssignTask.id);},
+                onPressed: () {
+                  Navigator.popAndPushNamed(
+                      context, AssignTask.id,
+                      arguments: {
+                        "groupData" : args,
+                      });
+                  },
                 label: Text('Tambah', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 icon: Icon(Icons.create, color: Colors.white,),
               ) : null,

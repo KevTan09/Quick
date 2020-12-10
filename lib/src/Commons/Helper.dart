@@ -17,18 +17,18 @@ class Helper {
         context: context,
         builder: (BuildContext context) => alert
       ).then((value) {
-        if(onClose != null)
+        if(onClose != null && onClose is Function)
           onClose();
       });
   }
 
-  static void showAlertDialog({BuildContext context, String message}) {
+  static void showAlertDialog({BuildContext context, String message, onClose}) {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {Navigator.of(context, rootNavigator: true).pop();},
     );
 
-    showDialogBox(context: context, content: Text(message), actions: [okButton]);
+    showDialogBox(context: context, content: Text(message), actions: [okButton], onClose: onClose);
   }
 
   static void showloading(BuildContext context) {

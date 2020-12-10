@@ -11,6 +11,7 @@ class ResponseCode {
 
   static final String groups_found = "CP208";
   static final String member_found = "CP209";
+  static final String member_removed = "CP210";
 
   // Error
   static final String wrong_method = "CP400";
@@ -37,4 +38,5 @@ class ResponseCode {
 
   static final String groups_not_found = "CP415";
   static final String member_not_found = "CP416";
+  static final String failed_remove_member = "CP417";
 }

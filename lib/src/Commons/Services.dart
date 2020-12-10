@@ -55,6 +55,90 @@ class Services {
     return data;
   }
 
+  static Future<Map<String, dynamic>> getMembers(groupId) async {
+    Map<String, String> param = {"group_id" : '$groupId'};
+    final response = await _requestGet(
+        "group/showMembers.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> addMember(username, groupId) async {
+    Map<String, String> param = {"username" : '$username', "group_id" : "$groupId"};
+    final response = await _requestPost(
+        "group/addMember.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> removeMember(userId, groupId) async {
+    Map<String, String> param = {"user_id" : '$userId', "group_id" : "$groupId"};
+    final response = await _requestPost(
+        "group/removeMember.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> getTasks(groupId) async {
+    Map<String, String> param = {"group_id" : '$groupId'};
+    final response = await _requestGet(
+        "group/showTasks.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> createTask(groupId, userId, targetId, taskDesc) async {
+    Map<String, String> param = {
+      "group_id" : "$groupId",
+      "user_id" : "$userId",
+      "target_id" : "$targetId",
+      "task_description" : "$taskDesc"
+    };
+
+    final response = await _requestPost(
+        "group/createTask.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
+  static Future<Map<String, dynamic>> submitTask(taskId, userId) async {
+    Map<String, String> param = {"task_id" : '$taskId', "user_id" : "$userId"};
+    final response = await _requestPost(
+        "group/submitTask.php",
+        param
+    );
+
+    final data = jsonDecode(response.body);
+    print("response = " + data.toString());
+
+    return data;
+  }
+
   static Future<Map<String, dynamic>> getGroups(String userId) async {
     Map<String, String> param = {"user_id" : userId};
     final response = await _requestGet(

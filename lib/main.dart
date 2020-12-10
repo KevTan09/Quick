@@ -1,6 +1,7 @@
 import 'package:Quick/src/Screens/group_screen/Assign_Task.dart';
 import 'package:Quick/src/Screens/group_screen/Group_List.dart';
 import 'package:Quick/src/Screens/group_screen/Group_Menu.dart';
+import 'package:Quick/src/Screens/group_screen/Profile_Screen.dart';
 import 'package:Quick/src/Screens/group_screen/Task_Detail.dart';
 import 'package:Quick/src/Screens/login_screen/Sign_In.dart';
 import 'package:Quick/src/Screens/login_screen/Sign_Up.dart';
@@ -16,8 +17,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       theme: ThemeData(
+          brightness: Brightness.light,
           primaryColor: Colors.orange,
           accentColor: Colors.orangeAccent,
 
@@ -29,10 +32,21 @@ class MyApp extends StatelessWidget {
         SplashScreen.id: (context) => SplashScreen(),
         LoginPage.id : (context) => LoginPage(),
         SignUpPage.id : (context) => SignUpPage(),
+        ProfileScreen.id : (context) => ProfileScreen(),
         GroupListScreen.id: (context) => GroupListScreen(),
         GroupScreen.id: (context) => GroupScreen(),
-        AssignTask.id: (context) => AssignTask(),
         TaskDetail.id: (context) => TaskDetail(),
+      },
+      onGenerateRoute: (settings) {
+        if(settings.name == AssignTask.id) {
+          final Map<String, dynamic> args = settings.arguments;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return AssignTask(groupData: args["groupData"]);
+            },
+          );
+        }
       },
     );
   }

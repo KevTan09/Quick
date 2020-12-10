@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Quick/src/Commons/Helper.dart';
 import 'package:Quick/src/Commons/Services.dart';
 import 'package:Quick/src/Commons/responseCode.dart';
+import 'package:Quick/src/Screens/group_screen/Profile_Screen.dart';
 import 'package:Quick/src/Widgets/Containers/Group_Container.dart';
 import 'package:Quick/src/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _GroupListScreenState extends State<GroupListScreen>{
 
   SharedPreferences pref;
   final ImagePicker picker = new ImagePicker();
-  
+
 
   String userId;
   String profileImage = "default_profile.png";
@@ -203,94 +204,105 @@ class _GroupListScreenState extends State<GroupListScreen>{
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => (false),
-        child: SafeArea(
+      onWillPop: () async => (false),
+      child: SafeArea(
           child: Scaffold(
-              resizeToAvoidBottomPadding: false,
-              floatingActionButton: FloatingActionButton(
-                  heroTag: "profile",
-                  onPressed: (){},
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.network(
-                      Services.serverImageUrl(profileImage),
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.fitWidth,
+            floatingActionButton: FloatingActionButton(
+                heroTag: "profile",
+                onPressed: (){
+                  Navigator.pushNamed(
+                      context,
+                      ProfileScreen.id,
+                      arguments: {
+                        "member" : {
+                          "username" : pref.getString("username"),
+                          "profile_pic" : pref.getString("profile_pic"),
+                          "email" : pref.getString("email"),
+                        }
+                      });
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.network(
+                    Services.serverImageUrl(profileImage),
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.fitWidth,
+                  ),
+                )
+            ),
+            appBar: AppBar(
+              leading: Icon(Icons.home, color: Colors.white, size: 30,),
+              actions: [
+                FlatButton(
+                  onPressed: logout,
+                  textColor: Colors.white,
+                  child: Row(
+                    children: [
+                      Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      SizedBox(width: 10),
+                      Icon(Icons.power_settings_new)
+                    ],
+                  ),
+                )
+              ],
+            ),
+            body: ready ? ListView(
+                children: <Widget>[
+                  InkWell(
+                    onTap: showGroupDialog,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        children: [
+                          Icon(Icons.group_add, color: Colors.blueAccent, size: 22,),
+                          SizedBox(width: 5),
+                          Text(
+                            "Buat Group Baru",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueAccent
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-              ),
-              appBar: AppBar(
-                leading: Icon(Icons.home, color: Colors.white, size: 30,),
-                actions: [
-                  FlatButton(
-                    onPressed: logout,
-                    textColor: Colors.white,
-                    child: Row(
-                      children: [
-                        Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                        SizedBox(width: 10),
-                        Icon(Icons.power_settings_new)
-                      ],
+                  ),
+                  for (var group in groups)
+                    GroupContainer(
+                      group: group,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context,
+                            GroupScreen.id,
+                            arguments: {
+                              'groupName': group['group_name'],
+                              'id' : group['group_id'],
+                              'is_admin' : group['is_admin']
+                            });
+                      },
                     ),
-                  )
-                ],
-              ),
-              body: SingleChildScrollView(
-                child: ready ?
-                Column(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: showGroupDialog,
-                        child: Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Row(
-                            children: [
-                              Icon(Icons.group_add, color: Colors.blueAccent, size: 22,),
-                              SizedBox(width: 5),
-                              Text(
-                                "Buat Group Baru",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueAccent
-                                ),
-                              )
-                            ],
-                          ),
+                  if (groups.isEmpty)
+                    Center(
+                      child: Text(
+                        "Anda Belum Memiliki Group",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black26
                         ),
                       ),
-                      for (var group in groups)
-                        GroupContainer(
-                          group: group,
-                          onTap: () {
-                            Navigator.pushNamed(context, GroupScreen.id, arguments: {'groupName': group['group_name'], 'id' : group['group_id']});
-                          },
-                        ),
-                      if (groups.isEmpty)
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Text(
-                              "Anda Belum Memiliki Group",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black26
-                              ),
-                            ),
-                          ),
-                        ),
-                    ]
-                ):
-                SizedBox.expand(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              )
-          ),
-        )
+                    ),
+                ]
+            ) :
+            SizedBox.expand(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          )
+      ),
     );
   }
 
