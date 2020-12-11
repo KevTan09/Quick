@@ -1,3 +1,6 @@
+import 'package:Quick/src/Commons/Helper.dart';
+import 'package:Quick/src/Commons/Services.dart';
+import 'package:Quick/src/Commons/responseCode.dart';
 import 'package:flutter/material.dart';
 
 import 'Assign_Task.dart';
@@ -5,21 +8,28 @@ import 'Member_List.dart';
 import 'Task_List.dart';
 
 class GroupScreen extends StatefulWidget{
+  GroupScreen({this.isAdmin, this.groupId, this.groupName});
+
   static const id = '/groupScreen';
+
+  final bool isAdmin;
+  final dynamic groupId, groupName;
 
   @override
   State<StatefulWidget> createState() {
-    return _GroupScreen();
+    return _GroupScreen(this.isAdmin, this.groupId, this.groupName);
   }
 
 }
 
 class _GroupScreen extends State<GroupScreen> {
-  int index = 0;
-  bool isAdmin = true;
-  dynamic groupId;
+  _GroupScreen(this.isAdmin, this.groupId, this.groupName);
 
-  _GroupScreen();
+  int index = 0;
+  bool isAdmin, ready = false;
+  dynamic groupId, groupName;
+
+  List<dynamic> tasks = new List<Map<String, Object>>();
 
   _onTabTap(int index) {
     setState(() {
@@ -27,18 +37,33 @@ class _GroupScreen extends State<GroupScreen> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final Map<String, Object> args = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
-
+  void fetchTasks() {
     setState(() {
-      isAdmin = args['is_admin'] == 1;
-      groupId = args['id'];
+      ready = false;
     });
 
+    Services.getTasks(groupId).then((data) {
+      setState(() {
+        ready = true;
+        if (data["code"] == ResponseCode.task_found) {
+          tasks = data['data'];
+        } else if (data["code"] == ResponseCode.task_not_found) {
+          tasks = [];
+        } else {
+          Helper.showAlertDialog(context: context, message: "Error");
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTasks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
         child: SafeArea(
@@ -47,11 +72,12 @@ class _GroupScreen extends State<GroupScreen> {
                   preferredSize: Size.fromHeight(100),
                   child: AppBar(
                     iconTheme: IconThemeData(
-                      color: Colors.white
+                        color: Colors.white
                     ),
-                    title: Text(args['groupName'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                    title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                     bottom: TabBar(
                       onTap: _onTabTap,
+                      indicatorColor: Colors.white,
                       tabs: [
                         Tab(
                             child: Row(
@@ -81,19 +107,34 @@ class _GroupScreen extends State<GroupScreen> {
               ),
               body: TabBarView(
                 children: [
-                  TaskList(isAdmin: this.isAdmin, groupId: groupId,),
+                  ready && tasks.isNotEmpty ?
+                  TaskList(this.isAdmin, tasks, fetchTasks) :
+                  SizedBox.expand(
+                    child: Center(
+                      child: ready ?
+                      Text(
+                        "Belum Ada Tugas",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black26
+                        ),
+                      ) : CircularProgressIndicator(),
+                    ),
+                  ),
                   MemberList(isAdmin: this.isAdmin, groupId: groupId)
                 ],
               ),
               floatingActionButton: this.index == 0 && this.isAdmin?
               FloatingActionButton.extended(
                 onPressed: () {
-                  Navigator.popAndPushNamed(
+                  Navigator.pushNamed(
                       context, AssignTask.id,
                       arguments: {
-                        "groupData" : args,
+                        "groupId" : groupId,
+                        "callback" : fetchTasks
                       });
-                  },
+                },
                 label: Text('Tambah', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 icon: Icon(Icons.create, color: Colors.white,),
               ) : null,

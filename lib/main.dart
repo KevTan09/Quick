@@ -34,16 +34,28 @@ class MyApp extends StatelessWidget {
         SignUpPage.id : (context) => SignUpPage(),
         ProfileScreen.id : (context) => ProfileScreen(),
         GroupListScreen.id: (context) => GroupListScreen(),
-        GroupScreen.id: (context) => GroupScreen(),
         TaskDetail.id: (context) => TaskDetail(),
       },
       onGenerateRoute: (settings) {
+        if(settings.name == GroupScreen.id) {
+          final Map<String, dynamic> args = settings.arguments;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return GroupScreen(
+                groupId: args["id"],
+                groupName: args["groupName"],
+                isAdmin: args["is_admin"] == 1,
+              );
+            },
+          );
+        }
         if(settings.name == AssignTask.id) {
           final Map<String, dynamic> args = settings.arguments;
 
           return MaterialPageRoute(
             builder: (context) {
-              return AssignTask(groupData: args["groupData"]);
+              return AssignTask(groupId: args["groupId"], callback: args["callback"]);
             },
           );
         }

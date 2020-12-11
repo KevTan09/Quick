@@ -7,24 +7,24 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AssignTask extends StatefulWidget{
-  AssignTask({this.groupData});
+  AssignTask({this.groupId, this.callback});
 
   static const id = '/assignTask';
 
-  final groupData;
+  final groupId, callback;
 
   @override
   State<StatefulWidget> createState() {
-    return _AssignTask(groupData: this.groupData);
+    return _AssignTask(groupId: this.groupId, callback: this.callback);
   }
 }
 
 class _AssignTask extends State<AssignTask> {
-  _AssignTask({this.groupData});
+  _AssignTask({this.groupId, this.callback});
   List<DropdownMenuItem<String>> groupMembers = [];
 
   String memberChosen;
-  dynamic memberId, groupData;
+  dynamic memberId, groupId, callback;
   String taskDesc;
 
   void createTask() async {
@@ -37,7 +37,7 @@ class _AssignTask extends State<AssignTask> {
 
     Helper.showloading(context);
     final data = await Services.createTask(
-        groupData["id"],
+        groupId,
         pref.getString("user_id"),
         memberId,
         taskDesc
@@ -45,13 +45,19 @@ class _AssignTask extends State<AssignTask> {
     Navigator.of(context, rootNavigator: true).pop();
 
     if(data["code"] == ResponseCode.task_created) {
-      Navigator.popAndPushNamed(context, GroupScreen.id, arguments: groupData);
+      Navigator.pop(context);
+      if(callback!=null && callback is Function){
+        callback();
+      }
     } else if (data["code"] == ResponseCode.failed_create_task) {
       Helper.showAlertDialog(
           context: context,
           message: "Gagal membuat tugas",
           onClose: () {
-            Navigator.popAndPushNamed(context, GroupScreen.id, arguments: groupData);
+            Navigator.pop(context);
+            if(callback!=null && callback is Function){
+              callback();
+            }
           }
       );
     } else if (data["code"] == ResponseCode.unauthorized_user) {
@@ -59,7 +65,10 @@ class _AssignTask extends State<AssignTask> {
           context: context,
           message: "Anda tidak memiliki hak membuat tugas",
           onClose: () {
-            Navigator.popAndPushNamed(context, GroupScreen.id, arguments: groupData);
+            Navigator.pop(context);
+            if(callback!=null && callback is Function){
+              callback();
+            }
           }
       );
     } else {
@@ -98,7 +107,7 @@ class _AssignTask extends State<AssignTask> {
   @override
   void initState() {
     super.initState();
-    fetchMembers(groupData["id"]);
+    fetchMembers(groupId);
   }
 
   @override
